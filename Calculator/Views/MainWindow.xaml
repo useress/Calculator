@@ -1,0 +1,33 @@
+<Window x:Class="Calculator.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Calculator.ViewModels"
+        Title="Calculator" Height="250" Width="300">
+
+    <Window.DataContext>
+        <vm:CalculatorViewModel/>
+    </Window.DataContext>
+
+    <StackPanel Margin="10">
+
+        <TextBox Text="{Binding Number1}" Margin="5"/>
+        <TextBox Text="{Binding Number2}" Margin="5"/>
+
+        <ComboBox SelectedItem="{Binding Operation}" Margin="5">
+            <ComboBoxItem Content="+"/>
+            <ComboBoxItem Content="-"/>
+            <ComboBoxItem Content="*"/>
+            <ComboBoxItem Content="/"/>
+        </ComboBox>
+
+        <Button Content="Calculate"
+                Command="{Binding CalculateCommand}"
+                Margin="5"/>
+
+        <TextBlock Text="{Binding Result}"
+                   FontSize="20"
+                   Margin="5"/>
+
+    </StackPanel>
+
+</Window>
