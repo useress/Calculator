@@ -1,65 +1,92 @@
-﻿using System.ComponentModel;
+﻿using Calculator.Models;
+using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Calculator.Models;
 
 namespace Calculator.ViewModels
 {
     public class CalculatorViewModel : INotifyPropertyChanged
     {
         private readonly CalculatorModel _model = new CalculatorModel();
+        private string _display = string.Empty;
 
-        private string _number1;
-        private string _number2;
-        private string _result;
-        private string _operation;
-
-        public string Number1
+        public string Display
         {
-            get => _number1;
-            set { _number1 = value; OnPropertyChanged(); }
+            get => _display;
+            set { _display = value; OnPropertyChanged(); }
         }
 
-        public string Number2
-        {
-            get => _number2;
-            set { _number2 = value; OnPropertyChanged(); }
-        }
-
-        public string Result
-        {
-            get => _result;
-            set { _result = value; OnPropertyChanged(); }
-        }
-
-        public string Operation
-        {
-            get => _operation;
-            set { _operation = value; OnPropertyChanged(); }
-        }
-
+        public ICommand InputCommand { get; }
+        public ICommand ClearCommand { get; }
+        public ICommand BackspaceCommand { get; }
         public ICommand CalculateCommand { get; }
 
         public CalculatorViewModel()
         {
-            CalculateCommand = new RelayCommand(Calculate);
+            InputCommand = new RelayCommand(p => OnInput((p ?? "").ToString()));
+            ClearCommand = new RelayCommand(_ => Display = string.Empty);
+            BackspaceCommand = new RelayCommand(_ =>
+            {
+                if (!string.IsNullOrEmpty(Display))
+                    Display = Display.Substring(0, Display.Length - 1);
+            });
+            CalculateCommand = new RelayCommand(_ => OnCalculate());
         }
 
-        private void Calculate(object obj)
+        private void OnInput(string token)
         {
-            double a = double.Parse(Number1);
-            double b = double.Parse(Number2);
+            if (string.IsNullOrEmpty(token)) return;
 
-            double res = _model.Calculate(a, b, Operation);
+            // если сейчас отображается "Error" — очищаем при вводе
+            if (Display == "Error") Display = string.Empty;
 
-            Result = res.ToString();
+            // просто добавляем цифру или оператор к строке
+            Display += token;
+        }
+
+        private void OnCalculate()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Display)) return;
+
+                double result = _model.Evaluate(Display);
+                // показываем результат
+                Display = result.ToString("G15", CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                Display = "Error";
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string prop = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
-        private void OnPropertyChanged([CallerMemberName] string name = null)
+        // Встроенная RelayCommand
+        private class RelayCommand : ICommand
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            private readonly Action<object> _execute;
+            private readonly Func<object, bool> _canExecute;
+
+            public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+            {
+                _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+                _canExecute = canExecute;
+            }
+
+            public event EventHandler CanExecuteChanged
+            {
+                add { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
+
+            public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
+
+            public void Execute(object parameter) => _execute(parameter);
         }
     }
 }
