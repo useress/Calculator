@@ -1,9 +1,5 @@
 {
   "Version": 1,
-<<<<<<< HEAD
-  "WorkspaceRootPath": "C:\\Users\\Vital\\Desktop\\Calculator\\",
-  "Documents": [],
-=======
   "WorkspaceRootPath": "D:\\projects\\Calculator\\",
   "Documents": [
     {
@@ -23,14 +19,10 @@
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
->>>>>>> version1
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-<<<<<<< HEAD
-      "DocumentGroups": []
-=======
       "DocumentGroups": [
         {
           "DockedWidth": 200,
@@ -90,7 +82,6 @@
           ]
         }
       ]
->>>>>>> version1
     }
   ]
 }
