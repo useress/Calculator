@@ -268,6 +268,7 @@ namespace Calculator.Models
 
             return output;
         }
+        
 
         // Вычисление ОПЗ
         protected virtual double EvaluateRpn(List<Token> rpn)
@@ -318,6 +319,11 @@ namespace Calculator.Models
                 throw new FormatException("Invalid expression");
 
             return stack.Pop();
+        }
+        
+        protected virtual bool IsValidFunctionCharacter(char c)
+        {
+            return char.IsLetter(c);
         }
 
         // Вспомогательные методы для регистрации операторов/функций в наследниках
