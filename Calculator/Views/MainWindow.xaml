@@ -47,6 +47,9 @@
 		<KeyBinding Key="Multiply" Command="{Binding InputCommand}" CommandParameter="*"/>
 		<KeyBinding Key="D8" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="*"/>
 		<KeyBinding Key="Oem2" Command="{Binding InputCommand}" CommandParameter="/"/>
+		<KeyBinding Key="D9" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="()"/>
+		<KeyBinding Key="D0" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter=")"/>
+
 
 		<!-- Enter = вычислить -->
 		<KeyBinding Key="Enter" Command="{Binding CalculateCommand}" />
@@ -80,32 +83,26 @@
 			<!-- Row 1 -->
 			<Button Content="C" Command="{Binding ClearCommand}" FontSize="18" />
 			<Button Content="⌫" Command="{Binding BackspaceCommand}" FontSize="18" />
-			<Button Content="/" Command="{Binding InputCommand}" CommandParameter="/" FontSize="18" />
-			<Button Content="*" Command="{Binding InputCommand}" CommandParameter="*" FontSize="18" />
-
-			<!-- Row 2 -->
+			<Button Content="(" Command="{Binding InputCommand}" CommandParameter="(" FontSize="18" />
+			<Button Content=")" Command="{Binding InputCommand}" CommandParameter=")" FontSize="18" />
 			<Button Content="7" Command="{Binding InputCommand}" CommandParameter="7" FontSize="18" />
 			<Button Content="8" Command="{Binding InputCommand}" CommandParameter="8" FontSize="18" />
 			<Button Content="9" Command="{Binding InputCommand}" CommandParameter="9" FontSize="18" />
-			<Button Content="-" Command="{Binding InputCommand}" CommandParameter="-" FontSize="18" />
-
-			<!-- Row 3 -->
+			<Button Content="/" Command="{Binding InputCommand}" CommandParameter="/" FontSize="18" />
 			<Button Content="4" Command="{Binding InputCommand}" CommandParameter="4" FontSize="18" />
 			<Button Content="5" Command="{Binding InputCommand}" CommandParameter="5" FontSize="18" />
 			<Button Content="6" Command="{Binding InputCommand}" CommandParameter="6" FontSize="18" />
-			<Button Content="+" Command="{Binding InputCommand}" CommandParameter="+" FontSize="18" />
-
-			<!-- Row 4 -->
+			<Button Content="*" Command="{Binding InputCommand}" CommandParameter="*" FontSize="18" />
 			<Button Content="1" Command="{Binding InputCommand}" CommandParameter="1" FontSize="18" />
 			<Button Content="2" Command="{Binding InputCommand}" CommandParameter="2" FontSize="18" />
 			<Button Content="3" Command="{Binding InputCommand}" CommandParameter="3" FontSize="18" />
-			<Button Content="=" Command="{Binding CalculateCommand}" FontSize="18" />
-
-			<!-- Row 5 -->
-			<Button Content="0" Command="{Binding InputCommand}" CommandParameter="0" FontSize="18" />
+			<Button Content="-" Command="{Binding InputCommand}" CommandParameter="-" FontSize="18" />
 			<Button Content="." Command="{Binding InputCommand}" CommandParameter="." FontSize="18" />
-			<Button Content="" IsEnabled="False" />
-			<Button Content="" IsEnabled="False" />
+			<Button Content="0" Command="{Binding InputCommand}" CommandParameter="0" FontSize="18" />
+			<Button Content="=" Command="{Binding CalculateCommand}" FontSize="18" />
+			<Button Content="+" Command="{Binding InputCommand}" CommandParameter="+" FontSize="18" />
+
+	
 		</UniformGrid>
 	</Grid>
 </Window>
