@@ -172,6 +172,8 @@
         <KeyBinding Key="OemMinus" Command="{Binding InputCommand}" CommandParameter="-"/>
         <KeyBinding Key="Multiply" Command="{Binding InputCommand}" CommandParameter="*"/>
         <KeyBinding Key="D8" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="*"/>
+        <KeyBinding Key="D9" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="("/>
+        <KeyBinding Key="D0" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter=")"/>
         <KeyBinding Key="Oem2" Command="{Binding InputCommand}" CommandParameter="/"/>
         <KeyBinding Key="Enter" Command="{Binding CalculateCommand}" />
         <KeyBinding Key="Return" Command="{Binding CalculateCommand}" />
