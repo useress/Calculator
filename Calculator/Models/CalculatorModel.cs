@@ -119,10 +119,6 @@ namespace Calculator.Models
             return output;
         }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 82f37c71b7d75a60b9c030fa47e37606a8284509
         private static double EvaluateRpn(List<Token> rpn)
         {
             var st = new Stack<double>();
