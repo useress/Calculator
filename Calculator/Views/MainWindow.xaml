@@ -7,7 +7,8 @@
         MinHeight="550" MinWidth="300"
         WindowStyle="None"
         ResizeMode="CanResize"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Loaded="Window_Loaded">
 
     <Window.DataContext>
         <vm:CalculatorViewModel />
@@ -221,86 +222,13 @@
                         Style="{StaticResource ToggleButtonStyle}"/>
             </StackPanel>
 
-            <!-- Обычный режим (5 колонок) -->
-            <UniformGrid Grid.Row="3" Rows="5" Columns="4" Margin="10,0,10,15"
-                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}, ConverterParameter=Collapsed}">
-                
-                <Button Content="C" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding ClearCommand}"/>
-                <Button Content="⌫" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding BackspaceCommand}"/>
-                <Button Content="^" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="^"/>
-                <Button Content="√" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="sqrt("/>
-                
-                <Button Content="7" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="7"/>
-                <Button Content="8" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="8"/>
-                <Button Content="9" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="9"/>
-                <Button Content="/" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="/"/>
-                
-                <Button Content="4" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="4"/>
-                <Button Content="5" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="5"/>
-                <Button Content="6" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="6"/>
-                <Button Content="*" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="*"/>
-                
-                <Button Content="1" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="1"/>
-                <Button Content="2" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="2"/>
-                <Button Content="3" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="3"/>
-                <Button Content="-" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="-"/>
-                
-                <Button Content="0" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="0"/>
-                <Button Content="." Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="."/>
-                <Button Content="+" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="+"/>
-                <Button Content="=" Style="{StaticResource XiaomiEqualButton}" Command="{Binding CalculateCommand}"/>
-                <Button Content="" IsEnabled="False" Visibility="Hidden"/>
-            </UniformGrid>
+            <!-- Normal layout - created programmatically -->
+            <UniformGrid x:Name="NormalButtonsGrid" Grid.Row="3" Rows="5" Columns="4" Margin="10,0,10,15"
+                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}, ConverterParameter=Collapsed}"/>
 
-            <!-- Расширенный режим (6 строк, 5 колонок) -->
-            <UniformGrid Grid.Row="3" Rows="6" Columns="5" Margin="10,0,10,15"
-                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}}">
-                
-                <!-- Row 0 - функции -->
-                <Button Content="sin" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="sin(" Margin="2"/>
-                <Button Content="cos" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="cos(" Margin="2"/>
-                <Button Content="tan" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="tg(" Margin="2"/>
-                <Button Content="ctg" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="ctg(" Margin="2"/>
-                <Button Content="lg" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="lg(" Margin="2" FontSize="14"/>
-                
-                <!-- Row 1 -->
-                <Button Content="C" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding ClearCommand}" Margin="2"/>
-                <Button Content="⌫" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding BackspaceCommand}" Margin="2"/>
-                <Button Content="√" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="sqrt(" Margin="2"/>
-                <Button Content="^" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="^" Margin="2"/>
-                <Button Content="π" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="pi" Margin="2"/>
-                
-                <!-- Row 2 -->
-                <Button Content="7" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="7" Margin="2"/>
-                <Button Content="8" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="8" Margin="2"/>
-                <Button Content="9" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="9" Margin="2"/>
-                <Button Content="/" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="/" Margin="2"/>
-                <Button Content="e" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="e" Margin="2"/>
-               
-                <!-- Row 3 -->
-                <Button Content="4" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="4" Margin="2"/>
-                <Button Content="5" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="5" Margin="2"/>
-                <Button Content="6" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="6" Margin="2"/>
-                <Button Content="*" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="*" Margin="2"/>
-                <Button Content="(" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="(" Margin="2"/>
-
-                
-                <!-- Row 4 -->
-                <Button Content="1" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="1" Margin="2"/>
-                <Button Content="2" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="2" Margin="2"/>
-                <Button Content="3" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="3" Margin="2"/>
-                <Button Content="-" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="-" Margin="2"/>
-                <Button Content=")" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter=")" Margin="2"/>
-
-                
-                <!-- Row 5 -->
-                <Button Content="0" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="0" Margin="2"/>
-                <Button Content="." Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="." Margin="2"/>
-                <Button Content="=" Style="{StaticResource XiaomiEqualButton}" Command="{Binding CalculateCommand}" Margin="2"/>
-                <Button Content="+" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="+" Margin="2"/>
-                <Button Content="" IsEnabled="False" Visibility="Hidden"/>
-
-            </UniformGrid>
+            <!-- Extended layout - created programmatically -->
+            <UniformGrid x:Name="ExtendedButtonsGrid" Grid.Row="3" Rows="6" Columns="5" Margin="10,0,10,15"
+                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </Border>
 </Window>
