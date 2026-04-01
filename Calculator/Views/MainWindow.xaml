@@ -1,111 +1,306 @@
-<Window x:Class="CalculatorApp.Views.MainWindow"
+<Window x:Class="Calculator.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Calculator.ViewModels"
-        Title="Calculator" Height="450" Width="320"
-        WindowStartupLocation="CenterScreen">
+        Title="Калькулятор" Height="600" Width="320"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="550" MinWidth="300"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
-	<Window.DataContext>
-		<vm:CalculatorViewModel />
-	</Window.DataContext>
+    <Window.DataContext>
+        <vm:CalculatorViewModel />
+    </Window.DataContext>
 
-	<!-- Key bindings для ввода с клавиатуры -->
-	<Window.InputBindings>
-		<!-- Цифры D0..D9 и NumPad -->
-		<KeyBinding Key="D0" Command="{Binding InputCommand}" CommandParameter="0"/>
-		<KeyBinding Key="D1" Command="{Binding InputCommand}" CommandParameter="1"/>
-		<KeyBinding Key="D2" Command="{Binding InputCommand}" CommandParameter="2"/>
-		<KeyBinding Key="D3" Command="{Binding InputCommand}" CommandParameter="3"/>
-		<KeyBinding Key="D4" Command="{Binding InputCommand}" CommandParameter="4"/>
-		<KeyBinding Key="D5" Command="{Binding InputCommand}" CommandParameter="5"/>
-		<KeyBinding Key="D6" Command="{Binding InputCommand}" CommandParameter="6"/>
-		<KeyBinding Key="D7" Command="{Binding InputCommand}" CommandParameter="7"/>
-		<KeyBinding Key="D8" Command="{Binding InputCommand}" CommandParameter="8"/>
-		<KeyBinding Key="D9" Command="{Binding InputCommand}" CommandParameter="9"/>
+    <Window.Resources>
+        <!-- Темная тема Xiaomi -->
+        <SolidColorBrush x:Key="BackgroundDark" Color="#1F1F1F"/>
+        <SolidColorBrush x:Key="SurfaceDark" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="NumberButtonBg" Color="#333333"/>
+        <SolidColorBrush x:Key="OperatorButtonBg" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="FunctionButtonBg" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="OperatorText" Color="#FF9800"/>
+        <SolidColorBrush x:Key="FunctionText" Color="#888888"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#B0B0B0"/>
+        <SolidColorBrush x:Key="EqualButtonBg" Color="#FF9800"/>
 
-		<KeyBinding Key="NumPad0" Command="{Binding InputCommand}" CommandParameter="0"/>
-		<KeyBinding Key="NumPad1" Command="{Binding InputCommand}" CommandParameter="1"/>
-		<KeyBinding Key="NumPad2" Command="{Binding InputCommand}" CommandParameter="2"/>
-		<KeyBinding Key="NumPad3" Command="{Binding InputCommand}" CommandParameter="3"/>
-		<KeyBinding Key="NumPad4" Command="{Binding InputCommand}" CommandParameter="4"/>
-		<KeyBinding Key="NumPad5" Command="{Binding InputCommand}" CommandParameter="5"/>
-		<KeyBinding Key="NumPad6" Command="{Binding InputCommand}" CommandParameter="6"/>
-		<KeyBinding Key="NumPad7" Command="{Binding InputCommand}" CommandParameter="7"/>
-		<KeyBinding Key="NumPad8" Command="{Binding InputCommand}" CommandParameter="8"/>
-		<KeyBinding Key="NumPad9" Command="{Binding InputCommand}" CommandParameter="9"/>
+        <!-- Базовый стиль кнопки -->
+        <Style x:Key="XiaomiButton" TargetType="Button">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Background" Value="{StaticResource NumberButtonBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="border" 
+                                    Background="{TemplateBinding Background}" 
+                                    CornerRadius="12"
+                                    BorderThickness="0">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#404040"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#505050"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-		<!-- точка -->
-		<KeyBinding Key="Decimal" Command="{Binding InputCommand}" CommandParameter="."/>
-		<KeyBinding Key="OemComma" Command="{Binding InputCommand}" CommandParameter="."/>
-		<KeyBinding Key="OemPeriod" Command="{Binding InputCommand}" CommandParameter="."/>
+        <Style x:Key="XiaomiOperatorButton" TargetType="Button" BasedOn="{StaticResource XiaomiButton}">
+            <Setter Property="Background" Value="{StaticResource OperatorButtonBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource OperatorText}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
 
-		<!-- Операторы -->
-		<KeyBinding Key="Add" Command="{Binding InputCommand}" CommandParameter="+"/>
-		<KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="+"/>
-		<KeyBinding Key="Subtract" Command="{Binding InputCommand}" CommandParameter="-"/>
-		<KeyBinding Key="OemMinus" Command="{Binding InputCommand}" CommandParameter="-"/>
-		<KeyBinding Key="Multiply" Command="{Binding InputCommand}" CommandParameter="*"/>
-		<KeyBinding Key="D8" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="*"/>
-		<KeyBinding Key="Oem2" Command="{Binding InputCommand}" CommandParameter="/"/>
+        <Style x:Key="XiaomiFunctionButton" TargetType="Button" BasedOn="{StaticResource XiaomiButton}">
+            <Setter Property="Background" Value="{StaticResource FunctionButtonBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource FunctionText}"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
 
-		<!-- Enter = вычислить -->
-		<KeyBinding Key="Enter" Command="{Binding CalculateCommand}" />
-		<KeyBinding Key="Return" Command="{Binding CalculateCommand}" />
+        <Style x:Key="XiaomiEqualButton" TargetType="Button" BasedOn="{StaticResource XiaomiButton}">
+            <Setter Property="Background" Value="{StaticResource EqualButtonBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
 
-		<!-- Backspace и Clear -->
-		<KeyBinding Key="Back" Command="{Binding BackspaceCommand}" />
-		<KeyBinding Key="Delete" Command="{Binding ClearCommand}" />
-	</Window.InputBindings>
+        <Style x:Key="XiaomiNumberButton" TargetType="Button" BasedOn="{StaticResource XiaomiButton}">
+            <Setter Property="Background" Value="{StaticResource NumberButtonBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
 
-	<!-- Дисплей и кнопки (UniformGrid) -->
-	<Grid Margin="8">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="8"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+        <Style x:Key="WindowButton" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#404040"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-		<!-- дисплей -->
-		<Border Grid.Row="0" Background="#222" CornerRadius="6" Padding="8">
-			<TextBlock Text="{Binding Display}"
-                       Foreground="White"
-                       FontSize="28"
-                       TextAlignment="Right"
-                       VerticalAlignment="Center"
-                       TextTrimming="CharacterEllipsis"/>
-		</Border>
+        <Style x:Key="ToggleButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="{StaticResource SurfaceDark}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#404040"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-		<!-- кнопки -->
-		<UniformGrid Grid.Row="2" Rows="5" Columns="4" Margin="0,12,0,0">
-			<!-- Row 1 -->
-			<Button Content="C" Command="{Binding ClearCommand}" FontSize="18" />
-			<Button Content="⌫" Command="{Binding BackspaceCommand}" FontSize="18" />
-			<Button Content="/" Command="{Binding InputCommand}" CommandParameter="/" FontSize="18" />
-			<Button Content="*" Command="{Binding InputCommand}" CommandParameter="*" FontSize="18" />
+    <!-- Key bindings -->
+    <Window.InputBindings>
+        <KeyBinding Key="D0" Command="{Binding InputCommand}" CommandParameter="0"/>
+        <KeyBinding Key="D1" Command="{Binding InputCommand}" CommandParameter="1"/>
+        <KeyBinding Key="D2" Command="{Binding InputCommand}" CommandParameter="2"/>
+        <KeyBinding Key="D3" Command="{Binding InputCommand}" CommandParameter="3"/>
+        <KeyBinding Key="D4" Command="{Binding InputCommand}" CommandParameter="4"/>
+        <KeyBinding Key="D5" Command="{Binding InputCommand}" CommandParameter="5"/>
+        <KeyBinding Key="D6" Command="{Binding InputCommand}" CommandParameter="6"/>
+        <KeyBinding Key="D7" Command="{Binding InputCommand}" CommandParameter="7"/>
+        <KeyBinding Key="D8" Command="{Binding InputCommand}" CommandParameter="8"/>
+        <KeyBinding Key="D9" Command="{Binding InputCommand}" CommandParameter="9"/>
+        <KeyBinding Key="NumPad0" Command="{Binding InputCommand}" CommandParameter="0"/>
+        <KeyBinding Key="NumPad1" Command="{Binding InputCommand}" CommandParameter="1"/>
+        <KeyBinding Key="NumPad2" Command="{Binding InputCommand}" CommandParameter="2"/>
+        <KeyBinding Key="NumPad3" Command="{Binding InputCommand}" CommandParameter="3"/>
+        <KeyBinding Key="NumPad4" Command="{Binding InputCommand}" CommandParameter="4"/>
+        <KeyBinding Key="NumPad5" Command="{Binding InputCommand}" CommandParameter="5"/>
+        <KeyBinding Key="NumPad6" Command="{Binding InputCommand}" CommandParameter="6"/>
+        <KeyBinding Key="NumPad7" Command="{Binding InputCommand}" CommandParameter="7"/>
+        <KeyBinding Key="NumPad8" Command="{Binding InputCommand}" CommandParameter="8"/>
+        <KeyBinding Key="NumPad9" Command="{Binding InputCommand}" CommandParameter="9"/>
+        <KeyBinding Key="Decimal" Command="{Binding InputCommand}" CommandParameter="."/>
+        <KeyBinding Key="OemComma" Command="{Binding InputCommand}" CommandParameter="."/>
+        <KeyBinding Key="OemPeriod" Command="{Binding InputCommand}" CommandParameter="."/>
+        <KeyBinding Key="Add" Command="{Binding InputCommand}" CommandParameter="+"/>
+        <KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="+"/>
+        <KeyBinding Key="Subtract" Command="{Binding InputCommand}" CommandParameter="-"/>
+        <KeyBinding Key="OemMinus" Command="{Binding InputCommand}" CommandParameter="-"/>
+        <KeyBinding Key="Multiply" Command="{Binding InputCommand}" CommandParameter="*"/>
+        <KeyBinding Key="D8" Modifiers="Shift" Command="{Binding InputCommand}" CommandParameter="*"/>
+        <KeyBinding Key="Oem2" Command="{Binding InputCommand}" CommandParameter="/"/>
+        <KeyBinding Key="Enter" Command="{Binding CalculateCommand}" />
+        <KeyBinding Key="Return" Command="{Binding CalculateCommand}" />
+        <KeyBinding Key="Back" Command="{Binding BackspaceCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding ClearCommand}" />
+    </Window.InputBindings>
 
-			<!-- Row 2 -->
-			<Button Content="7" Command="{Binding InputCommand}" CommandParameter="7" FontSize="18" />
-			<Button Content="8" Command="{Binding InputCommand}" CommandParameter="8" FontSize="18" />
-			<Button Content="9" Command="{Binding InputCommand}" CommandParameter="9" FontSize="18" />
-			<Button Content="-" Command="{Binding InputCommand}" CommandParameter="-" FontSize="18" />
+    <!-- Основной контейнер -->
+    <Border Background="{StaticResource BackgroundDark}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-			<!-- Row 3 -->
-			<Button Content="4" Command="{Binding InputCommand}" CommandParameter="4" FontSize="18" />
-			<Button Content="5" Command="{Binding InputCommand}" CommandParameter="5" FontSize="18" />
-			<Button Content="6" Command="{Binding InputCommand}" CommandParameter="6" FontSize="18" />
-			<Button Content="+" Command="{Binding InputCommand}" CommandParameter="+" FontSize="18" />
+            <!-- Заголовок окна для перетаскивания -->
+            <Grid Grid.Row="0" Background="{StaticResource SurfaceDark}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Калькулятор" Foreground="{StaticResource TextSecondary}" 
+                           VerticalAlignment="Center" Margin="12,0,0,0" FontSize="14"/>
+                <Button Grid.Column="1" Content="─" Style="{StaticResource WindowButton}" 
+                        Click="MinimizeWindow_Click" FontWeight="Bold"/>
+                <Button Grid.Column="2" Content="✕" Style="{StaticResource WindowButton}" 
+                        Click="CloseWindow_Click" Foreground="#FF5252"/>
+            </Grid>
 
-			<!-- Row 4 -->
-			<Button Content="1" Command="{Binding InputCommand}" CommandParameter="1" FontSize="18" />
-			<Button Content="2" Command="{Binding InputCommand}" CommandParameter="2" FontSize="18" />
-			<Button Content="3" Command="{Binding InputCommand}" CommandParameter="3" FontSize="18" />
-			<Button Content="=" Command="{Binding CalculateCommand}" FontSize="18" />
+            <!-- Дисплей -->
+            <Border Grid.Row="1" Background="{StaticResource BackgroundDark}" Padding="20,30,20,20">
+                <TextBlock Text="{Binding Display}"
+                           Foreground="{StaticResource TextPrimary}"
+                           FontSize="56"
+                           FontWeight="Light"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"
+                           FontFamily="Segoe UI"/>
+            </Border>
 
-			<!-- Row 5 -->
-			<Button Content="0" Command="{Binding InputCommand}" CommandParameter="0" FontSize="18" />
-			<Button Content="." Command="{Binding InputCommand}" CommandParameter="." FontSize="18" />
-			<Button Content="" IsEnabled="False" />
-			<Button Content="" IsEnabled="False" />
-		</UniformGrid>
-	</Grid>
+            <!-- Кнопка переключения режима -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,10">
+                <Button Content="⌨" Command="{Binding ToggleLayoutCommand}" 
+                        Style="{StaticResource ToggleButtonStyle}"/>
+            </StackPanel>
+
+            <!-- Обычный режим (5 колонок) -->
+            <UniformGrid Grid.Row="3" Rows="5" Columns="4" Margin="10,0,10,15"
+                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}, ConverterParameter=Collapsed}">
+                
+                <Button Content="C" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding ClearCommand}"/>
+                <Button Content="⌫" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding BackspaceCommand}"/>
+                <Button Content="^" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="^"/>
+                <Button Content="√" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="sqrt("/>
+                
+                <Button Content="7" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="7"/>
+                <Button Content="8" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="8"/>
+                <Button Content="9" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="9"/>
+                <Button Content="/" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="/"/>
+                
+                <Button Content="4" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="4"/>
+                <Button Content="5" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="5"/>
+                <Button Content="6" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="6"/>
+                <Button Content="*" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="*"/>
+                
+                <Button Content="1" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="1"/>
+                <Button Content="2" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="2"/>
+                <Button Content="3" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="3"/>
+                <Button Content="-" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="-"/>
+                
+                <Button Content="0" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="0"/>
+                <Button Content="." Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="."/>
+                <Button Content="+" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="+"/>
+                <Button Content="=" Style="{StaticResource XiaomiEqualButton}" Command="{Binding CalculateCommand}"/>
+                <Button Content="" IsEnabled="False" Visibility="Hidden"/>
+            </UniformGrid>
+
+            <!-- Расширенный режим (6 строк, 5 колонок) -->
+            <UniformGrid Grid.Row="3" Rows="6" Columns="5" Margin="10,0,10,15"
+                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}}">
+                
+                <!-- Row 0 - функции -->
+                <Button Content="sin" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="sin(" Margin="2"/>
+                <Button Content="cos" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="cos(" Margin="2"/>
+                <Button Content="tan" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="tg(" Margin="2"/>
+                <Button Content="ctg" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="ctg(" Margin="2"/>
+                <Button Content="lg" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="lg(" Margin="2" FontSize="14"/>
+                
+                <!-- Row 1 -->
+                <Button Content="C" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding ClearCommand}" Margin="2"/>
+                <Button Content="⌫" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding BackspaceCommand}" Margin="2"/>
+                <Button Content="√" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="sqrt(" Margin="2"/>
+                <Button Content="^" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="^" Margin="2"/>
+                <Button Content="π" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="pi" Margin="2"/>
+                
+                <!-- Row 2 -->
+                <Button Content="7" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="7" Margin="2"/>
+                <Button Content="8" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="8" Margin="2"/>
+                <Button Content="9" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="9" Margin="2"/>
+                <Button Content="/" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="/" Margin="2"/>
+                <Button Content="e" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="e" Margin="2"/>
+               
+                <!-- Row 3 -->
+                <Button Content="4" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="4" Margin="2"/>
+                <Button Content="5" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="5" Margin="2"/>
+                <Button Content="6" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="6" Margin="2"/>
+                <Button Content="*" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="*" Margin="2"/>
+                <Button Content="(" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter="(" Margin="2"/>
+
+                
+                <!-- Row 4 -->
+                <Button Content="1" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="1" Margin="2"/>
+                <Button Content="2" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="2" Margin="2"/>
+                <Button Content="3" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="3" Margin="2"/>
+                <Button Content="-" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="-" Margin="2"/>
+                <Button Content=")" Style="{StaticResource XiaomiFunctionButton}" Command="{Binding InputCommand}" CommandParameter=")" Margin="2"/>
+
+                
+                <!-- Row 5 -->
+                <Button Content="0" Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="0" Margin="2"/>
+                <Button Content="." Style="{StaticResource XiaomiNumberButton}" Command="{Binding InputCommand}" CommandParameter="." Margin="2"/>
+                <Button Content="=" Style="{StaticResource XiaomiEqualButton}" Command="{Binding CalculateCommand}" Margin="2"/>
+                <Button Content="+" Style="{StaticResource XiaomiOperatorButton}" Command="{Binding InputCommand}" CommandParameter="+" Margin="2"/>
+                <Button Content="" IsEnabled="False" Visibility="Hidden"/>
+
+            </UniformGrid>
+        </Grid>
+    </Border>
 </Window>
