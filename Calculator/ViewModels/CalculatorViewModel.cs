@@ -34,11 +34,24 @@ namespace Calculator.ViewModels
         public CalculatorViewModel()
         {
             InputCommand = new RelayCommand(p => OnInput(p?.ToString() ?? ""));
-            ClearCommand = new RelayCommand(_ => Display = string.Empty);
+            ClearCommand = new RelayCommand(_ =>
+            {
+                try
+                {
+                    Display = string.Empty;
+                }
+                catch { }
+            });
             BackspaceCommand = new RelayCommand(_ =>
             {
-                if (!string.IsNullOrEmpty(Display))
-                    Display = Display.Substring(0, Display.Length - 1);
+                try
+                {
+                    if (!string.IsNullOrEmpty(Display) && Display.Length > 0)
+                    {
+                        Display = Display.Substring(0, Display.Length - 1);
+                    }
+                }
+                catch { }
             });
             CalculateCommand = new RelayCommand(_ => OnCalculate());
             ToggleLayoutCommand = new RelayCommand(_ => IsExtendedLayout = !IsExtendedLayout);
@@ -46,12 +59,36 @@ namespace Calculator.ViewModels
 
         private void OnInput(string token)
         {
-            if (string.IsNullOrEmpty(token)) return;
+            try
+            {
+                // Validate token - null or empty is invalid
+                if (string.IsNullOrEmpty(token))
+                {
+                    // Don't process empty input
+                    return;
+                }
 
-            // если сейчас отображается "Error" — очищаем при вводе
-            if (Display == "Error") Display = string.Empty;
+                // If currently showing "Error" or null display — clear it when user starts typing
+                if (Display == "Error" || Display == null)
+                {
+                    Display = string.Empty;
+                }
 
-            Display += token;
+                // Append the token to the current display
+                string newDisplay = Display + token;
+                
+                // Safety check: ensure new display is not null or empty before setting
+                if (!string.IsNullOrEmpty(newDisplay))
+                {
+                    Display = newDisplay;
+                }
+            }
+            catch (Exception _)
+            {
+                // SafetyGuard: Don't let any exception break input
+                // Just silently ignore and keep display as-is
+                System.Diagnostics.Debug.WriteLine("OnInput exception occurred");
+            }
         }
 
         private void OnCalculate()
@@ -61,9 +98,53 @@ namespace Calculator.ViewModels
                 if (string.IsNullOrWhiteSpace(Display)) return;
 
                 double result = _model.Evaluate(Display);
-                Display = result.ToString("G15", CultureInfo.InvariantCulture);
+                
+                // Format the result to avoid truncation and scientific notation issues
+                // Use proper decimal precision
+                if (double.IsInfinity(result) || double.IsNaN(result))
+                {
+                    Display = "Error";
+                    return;
+                }
+                
+                if (result == 0)
+                {
+                    Display = "0";
+                    return;
+                }
+                
+                // Use F format with 10 decimal places, then remove trailing zeros
+                string formatted = result.ToString("F10", CultureInfo.InvariantCulture);
+                
+                // Remove trailing zeros after decimal point
+                if (formatted.Contains("."))
+                {
+                    formatted = formatted.TrimEnd('0').TrimEnd('.');
+                }
+                
+                // Ensure formatted string is not empty
+                if (string.IsNullOrEmpty(formatted) || formatted == "-")
+                {
+                    formatted = "0";
+                }
+                
+                // If the result is very large or very small, use G format but with better precision
+                if (formatted.Length > 15 || double.Abs(result) > 1e10 || (double.Abs(result) < 1e-5 && result != 0))
+                {
+                    formatted = result.ToString("G10", CultureInfo.InvariantCulture);
+                }
+                
+                // Final safety check
+                if (string.IsNullOrEmpty(formatted))
+                {
+                    Display = result.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    Display = formatted;
+                }
             }
-            catch
+            catch (Exception _)
             {
                 Display = "Error";
             }

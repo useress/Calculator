@@ -4,7 +4,7 @@
         xmlns:vm="clr-namespace:Calculator.ViewModels"
         Title="Калькулятор" Height="600" Width="320"
         WindowStartupLocation="CenterScreen"
-        MinHeight="550" MinWidth="300"
+        MinHeight="550" MinWidth="600"
         WindowStyle="None"
         ResizeMode="CanResize"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
@@ -212,7 +212,8 @@
                            FontWeight="Light"
                            TextAlignment="Right"
                            VerticalAlignment="Center"
-                           TextTrimming="CharacterEllipsis"
+                           TextTrimming="None"
+                           TextWrapping="NoWrap"
                            FontFamily="Segoe UI"/>
             </Border>
 

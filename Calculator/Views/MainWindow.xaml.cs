@@ -10,6 +10,7 @@ namespace Calculator.Views
     {
         private ButtonFactory _buttonFactory;
         private ButtonLayoutBuilder _layoutBuilder;
+        private CalculatorViewModel _viewModel;
 
         public MainWindow()
         {
@@ -19,14 +20,14 @@ namespace Calculator.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Initialize button factory with commands from ViewModel
-            var viewModel = this.DataContext as CalculatorViewModel;
-            if (viewModel != null)
+            _viewModel = this.DataContext as CalculatorViewModel;
+            if (_viewModel != null)
             {
                 _buttonFactory = new ButtonFactory(
-                    viewModel.InputCommand,
-                    viewModel.ClearCommand,
-                    viewModel.BackspaceCommand,
-                    viewModel.CalculateCommand
+                    _viewModel.InputCommand,
+                    new ClearCommandWrapper(_viewModel.ClearCommand, this),
+                    _viewModel.BackspaceCommand,
+                    _viewModel.CalculateCommand
                 );
 
                 // Build layouts using factory
@@ -37,6 +38,41 @@ namespace Calculator.Views
                 // Populate grids with buttons
                 PopulateNormalLayout();
                 PopulateExtendedLayout();
+                
+                // Set focus to the window to ensure keyboard input works
+                this.Focus();
+                this.Focusable = true;
+            }
+        }
+
+        /// <summary>
+        /// Wrapper command that clears and maintains keyboard focus
+        /// </summary>
+        private class ClearCommandWrapper : ICommand
+        {
+            private readonly ICommand _innerCommand;
+            private readonly Window _window;
+
+            public ClearCommandWrapper(ICommand innerCommand, Window window)
+            {
+                _innerCommand = innerCommand;
+                _window = window;
+            }
+
+            public event EventHandler CanExecuteChanged
+            {
+                add { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
+
+            public bool CanExecute(object parameter) => _innerCommand.CanExecute(parameter);
+
+            public void Execute(object parameter)
+            {
+                _innerCommand.Execute(parameter);
+                // Restore focus to window after clearing to ensure keyboard input works
+                _window.Focus();
+                System.Windows.Input.Keyboard.Focus(_window);
             }
         }
 
@@ -81,7 +117,9 @@ namespace Calculator.Views
                 Command = config.Command,
                 CommandParameter = config.InputValue,
                 Margin = new Thickness(double.Parse(config.Margin)),
-                Style = (System.Windows.Style)this.Resources[config.Style]
+                Style = (System.Windows.Style)this.Resources[config.Style],
+                // Prevent buttons from taking keyboard focus
+                Focusable = false
             };
 
             return button;
