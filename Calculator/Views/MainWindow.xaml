@@ -6,6 +6,8 @@
         WindowStartupLocation="CenterScreen"
         MinHeight="550" MinWidth="600"
         WindowStyle="None"
+        Icon="\resources\calc.ico"
+        Cursor="\resources\mycursor.cur"
         ResizeMode="CanResize"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded">
