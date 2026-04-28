@@ -2,12 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Calculator.ViewModels"
-        Title="Калькулятор" Height="600" Width="320"
+        Title="Калькулятор" 
+        Height="600" Width="320"
         WindowStartupLocation="CenterScreen"
         MinHeight="550" MinWidth="600"
         WindowStyle="None"
-        Icon="\resources\calc.ico"
-        Cursor="\resources\mycursor.cur"
+        Icon="/resources/calc.ico"
+        Cursor="/resources/mycursor.cur"
         ResizeMode="CanResize"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded">
@@ -17,7 +18,6 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <!-- Темная тема Xiaomi -->
         <SolidColorBrush x:Key="BackgroundDark" Color="#1F1F1F"/>
         <SolidColorBrush x:Key="SurfaceDark" Color="#2D2D2D"/>
         <SolidColorBrush x:Key="NumberButtonBg" Color="#333333"/>
@@ -29,7 +29,13 @@
         <SolidColorBrush x:Key="TextSecondary" Color="#B0B0B0"/>
         <SolidColorBrush x:Key="EqualButtonBg" Color="#FF9800"/>
 
-        <!-- Базовый стиль кнопки -->
+        <!-- Переопределение системных цветов (для безопасности) -->
+        <SolidColorBrush x:Key="{x:Static SystemColors.MenuBrushKey}" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.MenuTextBrushKey}" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.MenuHighlightBrushKey}" Color="#404040"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#FFFFFF"/>
+
+        <!-- Стиль для обычных кнопок -->
         <Style x:Key="XiaomiButton" TargetType="Button">
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontWeight" Value="Normal"/>
@@ -101,10 +107,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -127,10 +131,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -141,9 +143,23 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Стиль пункта меню (одиночный) -->
+        <Style TargetType="MenuItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#404040"/>
+                    <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
-    <!-- Key bindings -->
     <Window.InputBindings>
         <KeyBinding Key="D0" Command="{Binding InputCommand}" CommandParameter="0"/>
         <KeyBinding Key="D1" Command="{Binding InputCommand}" CommandParameter="1"/>
@@ -183,57 +199,119 @@
         <KeyBinding Key="Delete" Command="{Binding ClearCommand}" />
     </Window.InputBindings>
 
-    <!-- Основной контейнер -->
     <Border Background="{StaticResource BackgroundDark}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Заголовок окна для перетаскивания -->
+            <!-- Строка заголовка -->
             <Grid Grid.Row="0" Background="{StaticResource SurfaceDark}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Калькулятор" Foreground="{StaticResource TextSecondary}" 
-                           VerticalAlignment="Center" Margin="12,0,0,0" FontSize="14"/>
-                <Button Grid.Column="1" Content="─" Style="{StaticResource WindowButton}" 
+
+                <!-- Меню (один пункт "О программе" с иконкой) -->
+                <Menu Grid.Column="0" Background="Transparent" BorderThickness="0" Margin="4,0,0,0" VerticalAlignment="Center">
+                    <MenuItem x:Name="AboutMenuItem" Click="AboutMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Path StrokeThickness="0" Width="16" Height="16" Stretch="Uniform"
+                                  Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,7V9H13V7H11M11,11V17H13V11H11Z"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=MenuItem}}"/>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                            <TextBlock Text="О программе" Margin="2,0"/>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </Menu>
+
+                <TextBlock Grid.Column="1" Text="Калькулятор" Foreground="{StaticResource TextSecondary}" 
+                           VerticalAlignment="Center" Margin="8,0,0,0" FontSize="14"/>
+
+                <Button Grid.Column="2" Content="─" Style="{StaticResource WindowButton}" 
                         Click="MinimizeWindow_Click" FontWeight="Bold"/>
-                <Button Grid.Column="2" Content="✕" Style="{StaticResource WindowButton}" 
+                <Button Grid.Column="3" Content="✕" Style="{StaticResource WindowButton}" 
                         Click="CloseWindow_Click" Foreground="#FF5252"/>
             </Grid>
 
-            <!-- Дисплей -->
-            <Border Grid.Row="1" Background="{StaticResource BackgroundDark}" Padding="20,30,20,20">
-                <TextBlock Text="{Binding Display}"
-                           Foreground="{StaticResource TextPrimary}"
-                           FontSize="56"
-                           FontWeight="Light"
-                           TextAlignment="Right"
-                           VerticalAlignment="Center"
-                           TextTrimming="None"
-                           TextWrapping="NoWrap"
-                           FontFamily="Segoe UI"/>
-            </Border>
+            <!-- Контент -->
+            <Grid Grid.Row="1">
+                <!-- Панель калькулятора -->
+                <Grid x:Name="CalculatorPanel" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-            <!-- Кнопка переключения режима -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,10">
-                <Button Content="⌨" Command="{Binding ToggleLayoutCommand}" 
-                        Style="{StaticResource ToggleButtonStyle}"/>
-            </StackPanel>
+                    <Border Grid.Row="0" Background="{StaticResource BackgroundDark}" Padding="20,30,20,20">
+                        <TextBlock Text="{Binding Display}"
+                                   Foreground="{StaticResource TextPrimary}"
+                                   FontSize="56" FontWeight="Light"
+                                   TextAlignment="Right" VerticalAlignment="Center"
+                                   TextTrimming="None" TextWrapping="NoWrap"
+                                   FontFamily="Segoe UI"/>
+                    </Border>
 
-            <!-- Normal layout - created programmatically -->
-            <UniformGrid x:Name="NormalButtonsGrid" Grid.Row="3" Rows="5" Columns="4" Margin="10,0,10,15"
-                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}, ConverterParameter=Collapsed}"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,10">
+                        <Button Content="⌨" Command="{Binding ToggleLayoutCommand}" 
+                                Style="{StaticResource ToggleButtonStyle}"/>
+                    </StackPanel>
 
-            <!-- Extended layout - created programmatically -->
-            <UniformGrid x:Name="ExtendedButtonsGrid" Grid.Row="3" Rows="6" Columns="5" Margin="10,0,10,15"
-                         Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}}"/>
+                    <UniformGrid x:Name="NormalButtonsGrid" Grid.Row="2" Rows="5" Columns="4" Margin="10,0,10,15"
+                                 Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}, ConverterParameter=Collapsed}"/>
+                    <UniformGrid x:Name="ExtendedButtonsGrid" Grid.Row="2" Rows="6" Columns="5" Margin="10,0,10,15"
+                                 Visibility="{Binding IsExtendedLayout, Converter={StaticResource BoolToVis}}"/>
+                </Grid>
+
+                <!-- Панель "О программе" -->
+                <Grid x:Name="AboutPanel" Visibility="Collapsed" Background="{StaticResource BackgroundDark}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Разработчики калькулятора" 
+                               FontSize="24" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimary}" 
+                               HorizontalAlignment="Center" Margin="20,20,20,10"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
+                        <WrapPanel x:Name="CreatorsWrapPanel" HorizontalAlignment="Center"/>
+                    </ScrollViewer>
+
+                    <Button Grid.Row="2" Content="Назад к калькулятору" 
+                            Width="200" Height="40" Margin="0,20,0,20"
+                            HorizontalAlignment="Center" Click="BackToCalculator_Click"
+                            BorderThickness="0" Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#FF9800"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFB74D"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Grid>
         </Grid>
     </Border>
 </Window>

@@ -10,8 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Views\" />
-     <Resource Include="resources\calc.ico" />
-     <Resource Include="resources\mycursor.cur" />
+     <Resource Include="resources\**\*" />
   </ItemGroup>
   
 </Project>

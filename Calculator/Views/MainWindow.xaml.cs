@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Calculator.Models.Buttons;
 using Calculator.ViewModels;
 
@@ -19,7 +21,6 @@ namespace Calculator.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Initialize button factory with commands from ViewModel
             _viewModel = this.DataContext as CalculatorViewModel;
             if (_viewModel != null)
             {
@@ -30,24 +31,88 @@ namespace Calculator.Views
                     _viewModel.CalculateCommand
                 );
 
-                // Build layouts using factory
                 _layoutBuilder = new ButtonLayoutBuilder(_buttonFactory);
                 _layoutBuilder.BuildNormalLayout();
                 _layoutBuilder.BuildExtendedLayout();
 
-                // Populate grids with buttons
                 PopulateNormalLayout();
                 PopulateExtendedLayout();
-                
-                // Set focus to the window to ensure keyboard input works
+
                 this.Focus();
                 this.Focusable = true;
             }
+
+            LoadCreators();
         }
 
-        /// <summary>
-        /// Wrapper command that clears and maintains keyboard focus
-        /// </summary>
+        private void LoadCreators()
+        {
+            var creators = new[]
+            {
+                new { Name = "Лобань Иван", Role = "Архитектор", Photo = "/resources/photos/creator1.jpg" },
+                new { Name = "Алексеев Ярослав", Role = "Стажер frontend", Photo = "/resources/photos/creator2.jpg" },
+                new { Name = "Данченко Степан", Role = "Бэкенд, тестирование", Photo = "/resources/photos/creator3.jpg" },
+                new { Name = "Самсоненко Виталий", Role = "Сеньор frontend", Photo = "/resources/photos/creator4.jpg" }
+            };
+
+            foreach (var c in creators)
+            {
+                var border = new Border
+                {
+                    Background = (SolidColorBrush)FindResource("SurfaceDark"),
+                    CornerRadius = new CornerRadius(12),
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(10),
+                    Width = 200
+                };
+                var stack = new StackPanel();
+
+                var img = new Image
+                {
+                    Source = new BitmapImage(new Uri(c.Photo, UriKind.Relative)),
+                    Width = 120,
+                    Height = 120,
+                    Stretch = Stretch.UniformToFill,
+                    Margin = new Thickness(0, 0, 0, 8)
+                };
+
+                var nameBlock = new TextBlock
+                {
+                    Text = c.Name,
+                    Foreground = (SolidColorBrush)FindResource("TextPrimary"),
+                    FontSize = 16,
+                    FontWeight = FontWeights.Bold,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
+                var roleBlock = new TextBlock
+                {
+                    Text = c.Role,
+                    Foreground = (SolidColorBrush)FindResource("TextSecondary"),
+                    FontSize = 12,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
+                stack.Children.Add(img);
+                stack.Children.Add(nameBlock);
+                stack.Children.Add(roleBlock);
+                border.Child = stack;
+                CreatorsWrapPanel.Children.Add(border);
+            }
+        }
+
+        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            CalculatorPanel.Visibility = Visibility.Collapsed;
+            AboutPanel.Visibility = Visibility.Visible;
+        }
+
+        private void BackToCalculator_Click(object sender, RoutedEventArgs e)
+        {
+            AboutPanel.Visibility = Visibility.Collapsed;
+            CalculatorPanel.Visibility = Visibility.Visible;
+        }
+
         private class ClearCommandWrapper : ICommand
         {
             private readonly ICommand _innerCommand;
@@ -70,19 +135,14 @@ namespace Calculator.Views
             public void Execute(object parameter)
             {
                 _innerCommand.Execute(parameter);
-                // Restore focus to window after clearing to ensure keyboard input works
                 _window.Focus();
-                System.Windows.Input.Keyboard.Focus(_window);
+                Keyboard.Focus(_window);
             }
         }
 
-        /// <summary>
-        /// Populate the normal calculator layout grid with buttons
-        /// </summary>
         private void PopulateNormalLayout()
         {
             NormalButtonsGrid.Children.Clear();
-
             foreach (var button in _layoutBuilder.GetNormalLayout())
             {
                 var xamlButton = CreateXamlButton(button);
@@ -90,13 +150,9 @@ namespace Calculator.Views
             }
         }
 
-        /// <summary>
-        /// Populate the extended calculator layout grid with buttons
-        /// </summary>
         private void PopulateExtendedLayout()
         {
             ExtendedButtonsGrid.Children.Clear();
-
             foreach (var button in _layoutBuilder.GetExtendedLayout())
             {
                 var xamlButton = CreateXamlButton(button);
@@ -104,24 +160,18 @@ namespace Calculator.Views
             }
         }
 
-        /// <summary>
-        /// Create a WPF Button from a Button model
-        /// </summary>
-        private System.Windows.Controls.Button CreateXamlButton(Models.Buttons.Button buttonModel)
+        private System.Windows.Controls.Button CreateXamlButton(Calculator.Models.Buttons.Button buttonModel)
         {
             var config = buttonModel.GetConfiguration();
-
             var button = new System.Windows.Controls.Button
             {
                 Content = config.Display,
                 Command = config.Command,
                 CommandParameter = config.InputValue,
                 Margin = new Thickness(double.Parse(config.Margin)),
-                Style = (System.Windows.Style)this.Resources[config.Style],
-                // Prevent buttons from taking keyboard focus
+                Style = (Style)this.Resources[config.Style],
                 Focusable = false
             };
-
             return button;
         }
 
