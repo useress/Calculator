@@ -2,15 +2,24 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using Calculator.Models.Buttons;
+using Calculator.Models.Buttons.Adapters;
+using Calculator.Models.Buttons.Bridge;
+using Calculator.Models.Buttons.Composite;
+using Calculator.Models.Buttons.Decorators;
+using Calculator.Models.Commands;
+using Calculator.Models.Facades;
+using System.Collections.Generic;
 using Calculator.ViewModels;
 
 namespace Calculator.Views
 {
     public partial class MainWindow : Window
     {
-        private ButtonFactory _buttonFactory;
-        private ButtonLayoutBuilder _layoutBuilder;
-        private CalculatorViewModel _viewModel;
+        private ButtonFactory _buttonFactory = null!;
+        private CompositeButtonLayoutBuilder _layoutBuilder = null!;
+        private CalculatorViewModelRefactored _viewModel = null!;
+        private ButtonGroup _normalLayout = null!;
+        private ButtonGroup _extendedLayout = null!;
 
         public MainWindow()
         {
@@ -19,30 +28,34 @@ namespace Calculator.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Initialize button factory with commands from ViewModel
-            _viewModel = this.DataContext as CalculatorViewModel;
-            if (_viewModel != null)
-            {
-                _buttonFactory = new ButtonFactory(
-                    _viewModel.InputCommand,
-                    new ClearCommandWrapper(_viewModel.ClearCommand, this),
-                    _viewModel.BackspaceCommand,
-                    _viewModel.CalculateCommand
-                );
+            // Build runtime object graph through facade to keep UI layer simple.
+            var model = new Calculator.Models.EngineeringCalculatorModel();
+            var state = new CalculatorState();
+            var invoker = new CommandInvoker();
+            var facade = new CalculatorFacade(model, state, invoker);
 
-                // Build layouts using factory
-                _layoutBuilder = new ButtonLayoutBuilder(_buttonFactory);
-                _layoutBuilder.BuildNormalLayout();
-                _layoutBuilder.BuildExtendedLayout();
+            _viewModel = new CalculatorViewModelRefactored(facade);
+            DataContext = _viewModel;
 
-                // Populate grids with buttons
-                PopulateNormalLayout();
-                PopulateExtendedLayout();
-                
-                // Set focus to the window to ensure keyboard input works
-                this.Focus();
-                this.Focusable = true;
-            }
+            _buttonFactory = new ButtonFactory(
+                _viewModel.InputCommand,
+                new ClearCommandWrapper(_viewModel.ClearCommand, this),
+                _viewModel.BackspaceCommand,
+                _viewModel.CalculateCommand
+            );
+            facade.SetButtonFactory(_buttonFactory);
+
+            // Build layouts through Composite pattern.
+            _layoutBuilder = new CompositeButtonLayoutBuilder(_buttonFactory);
+            _normalLayout = _layoutBuilder.BuildNormalLayout();
+            _extendedLayout = _layoutBuilder.BuildExtendedLayout();
+
+            PopulateNormalLayout();
+            PopulateExtendedLayout();
+
+            // Set focus to the window to ensure keyboard input works
+            this.Focus();
+            this.Focusable = true;
         }
 
         /// <summary>
@@ -83,9 +96,9 @@ namespace Calculator.Views
         {
             NormalButtonsGrid.Children.Clear();
 
-            foreach (var button in _layoutBuilder.GetNormalLayout())
+            foreach (var button in FlattenButtons(_normalLayout))
             {
-                var xamlButton = CreateXamlButton(button);
+                var xamlButton = CreateXamlButton(button, isExtendedLayout: false);
                 NormalButtonsGrid.Children.Add(xamlButton);
             }
         }
@@ -97,9 +110,9 @@ namespace Calculator.Views
         {
             ExtendedButtonsGrid.Children.Clear();
 
-            foreach (var button in _layoutBuilder.GetExtendedLayout())
+            foreach (var button in FlattenButtons(_extendedLayout))
             {
-                var xamlButton = CreateXamlButton(button);
+                var xamlButton = CreateXamlButton(button, isExtendedLayout: true);
                 ExtendedButtonsGrid.Children.Add(xamlButton);
             }
         }
@@ -107,22 +120,79 @@ namespace Calculator.Views
         /// <summary>
         /// Create a WPF Button from a Button model
         /// </summary>
-        private System.Windows.Controls.Button CreateXamlButton(Models.Buttons.Button buttonModel)
+        private System.Windows.Controls.Button CreateXamlButton(Models.Buttons.Button buttonModel, bool isExtendedLayout)
         {
-            var config = buttonModel.GetConfiguration();
+            // Decorator pattern: add runtime visual behavior without touching base button types.
+            var decoratedButton = ApplyDecorators(buttonModel, isExtendedLayout);
+
+            // Adapter pattern: convert button model into UI-friendly contract.
+            var adapter = ButtonAdapterFactory.CreateAdapter(decoratedButton, ButtonAdapterFactory.AdapterType.Wpf);
+
+            // Bridge pattern: keep rendering/action pipeline abstract from concrete UI platform.
+            var platformAwareButton = new PlatformAwareButton(decoratedButton, new WpfButtonImplementation());
+            platformAwareButton.SetProperty("Layout", isExtendedLayout ? "Extended" : "Normal");
+            platformAwareButton.Render();
 
             var button = new System.Windows.Controls.Button
             {
-                Content = config.Display,
-                Command = config.Command,
-                CommandParameter = config.InputValue,
-                Margin = new Thickness(double.Parse(config.Margin)),
-                Style = (System.Windows.Style)this.Resources[config.Style],
+                Content = adapter.GetDisplayText(),
+                Command = adapter.GetCommand(),
+                CommandParameter = adapter.GetInputValue(),
+                Margin = new Thickness(double.Parse(adapter.GetMargin())),
+                Style = (System.Windows.Style)this.Resources[adapter.GetStyleIdentifier()],
                 // Prevent buttons from taking keyboard focus
                 Focusable = false
             };
 
             return button;
+        }
+
+        private Models.Buttons.Button ApplyDecorators(Models.Buttons.Button button, bool isExtendedLayout)
+        {
+            Models.Buttons.Button decorated = button;
+
+            if (isExtendedLayout)
+            {
+                decorated = new MarginButtonDecorator(decorated, "2");
+            }
+
+            // Sized decorator is used to keep optional size metadata for future dynamic layout scenarios.
+            var sizedDecorator = new SizedButtonDecorator(decorated, isExtendedLayout ? "56" : "64", "60");
+            _ = sizedDecorator.GetDimensions();
+            decorated = sizedDecorator;
+
+            return decorated;
+        }
+
+        private IEnumerable<Models.Buttons.Button> FlattenButtons(ButtonGroup root)
+        {
+            foreach (var component in root.GetComponents())
+            {
+                foreach (var button in FlattenComponent(component))
+                {
+                    yield return button;
+                }
+            }
+        }
+
+        private IEnumerable<Models.Buttons.Button> FlattenComponent(IButtonComponent component)
+        {
+            if (component is ButtonLeaf leaf)
+            {
+                yield return leaf.GetButton();
+                yield break;
+            }
+
+            if (component is ButtonGroup group)
+            {
+                foreach (var child in group.GetComponents())
+                {
+                    foreach (var button in FlattenComponent(child))
+                    {
+                        yield return button;
+                    }
+                }
+            }
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

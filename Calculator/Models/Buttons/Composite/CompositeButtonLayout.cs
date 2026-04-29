@@ -40,6 +40,14 @@ namespace Calculator.Models.Buttons.Composite
         {
             return _button.GetConfiguration();
         }
+
+        /// <summary>
+        /// Get underlying button model for advanced composition pipelines
+        /// </summary>
+        public Button GetButton()
+        {
+            return _button;
+        }
     }
 
     /// <summary>

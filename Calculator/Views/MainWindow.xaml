@@ -10,10 +10,6 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded">
 
-    <Window.DataContext>
-        <vm:CalculatorViewModel />
-    </Window.DataContext>
-
     <Window.Resources>
         <!-- Темная тема Xiaomi -->
         <SolidColorBrush x:Key="BackgroundDark" Color="#1F1F1F"/>
