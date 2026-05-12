@@ -9,7 +9,7 @@ namespace Calculator.Models.Facades
         private readonly EngineeringCalculatorModel _calculatorModel;
         private readonly Commands.CalculatorState _state;
         private readonly Commands.CommandInvoker _invoker;
-        private readonly Buttons.ButtonFactory _buttonFactory;
+        private Buttons.ButtonFactory? _buttonFactory;
 
         public string Display
         {
@@ -45,7 +45,7 @@ namespace Calculator.Models.Facades
             EngineeringCalculatorModel calculatorModel,
             Commands.CalculatorState state,
             Commands.CommandInvoker invoker,
-            Buttons.ButtonFactory buttonFactory)
+            Buttons.ButtonFactory? buttonFactory = null)
         {
             _calculatorModel = calculatorModel;
             _state = state;
@@ -122,7 +122,18 @@ namespace Calculator.Models.Facades
         /// </summary>
         public Buttons.ButtonFactory GetButtonFactory()
         {
+            if (_buttonFactory == null)
+                throw new System.InvalidOperationException("ButtonFactory is not set for CalculatorFacade.");
+
             return _buttonFactory;
+        }
+
+        /// <summary>
+        /// Set or replace the button factory after facade initialization
+        /// </summary>
+        public void SetButtonFactory(Buttons.ButtonFactory buttonFactory)
+        {
+            _buttonFactory = buttonFactory ?? throw new System.ArgumentNullException(nameof(buttonFactory));
         }
 
         /// <summary>

@@ -13,10 +13,6 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded">
 
-    <Window.DataContext>
-        <vm:CalculatorViewModel />
-    </Window.DataContext>
-
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundDark" Color="#1F1F1F"/>
         <SolidColorBrush x:Key="SurfaceDark" Color="#2D2D2D"/>
