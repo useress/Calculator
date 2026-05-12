@@ -4,6 +4,13 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Calculator.Models.Buttons;
+using Calculator.Models.Buttons.Adapters;
+using Calculator.Models.Buttons.Bridge;
+using Calculator.Models.Buttons.Composite;
+using Calculator.Models.Buttons.Decorators;
+using Calculator.Models.Commands;
+using Calculator.Models.Facades;
+using System.Collections.Generic;
 using Calculator.ViewModels;
 using System.Media; // <--- нужно для звуков вроде как
 using System.Security.AccessControl;
@@ -13,14 +20,11 @@ namespace Calculator.Views
 {
     public partial class MainWindow : Window
     {
-        private ButtonFactory _buttonFactory;
-        private ButtonLayoutBuilder _layoutBuilder;
-        private CalculatorViewModel _viewModel;
-        System.Media.SoundPlayer soundAbout = new System.Media.SoundPlayer(
-            SoundPaths.InSoundsFolder("sound_cheer.wav"));
-        System.Media.SoundPlayer soundLeave = new System.Media.SoundPlayer(
-            SoundPaths.InSoundsFolder("sound_leave.wav"));
-
+        private ButtonFactory _buttonFactory = null!;
+        private CompositeButtonLayoutBuilder _layoutBuilder = null!;
+        private CalculatorViewModelRefactored _viewModel = null!;
+        private ButtonGroup _normalLayout = null!;
+        private ButtonGroup _extendedLayout = null!;
 
         public MainWindow()
         {
@@ -161,7 +165,7 @@ namespace Calculator.Views
             NormalButtonsGrid.Children.Clear();
             foreach (var button in _layoutBuilder.GetNormalLayout())
             {
-                var xamlButton = CreateXamlButton(button);
+                var xamlButton = CreateXamlButton(button, isExtendedLayout: false);
                 NormalButtonsGrid.Children.Add(xamlButton);
             }
         }
@@ -171,7 +175,7 @@ namespace Calculator.Views
             ExtendedButtonsGrid.Children.Clear();
             foreach (var button in _layoutBuilder.GetExtendedLayout())
             {
-                var xamlButton = CreateXamlButton(button);
+                var xamlButton = CreateXamlButton(button, isExtendedLayout: true);
                 ExtendedButtonsGrid.Children.Add(xamlButton);
             }
         }
@@ -189,6 +193,54 @@ namespace Calculator.Views
                 Focusable = false
             };
             return button;
+        }
+
+        private Models.Buttons.Button ApplyDecorators(Models.Buttons.Button button, bool isExtendedLayout)
+        {
+            Models.Buttons.Button decorated = button;
+
+            if (isExtendedLayout)
+            {
+                decorated = new MarginButtonDecorator(decorated, "2");
+            }
+
+            // Sized decorator is used to keep optional size metadata for future dynamic layout scenarios.
+            var sizedDecorator = new SizedButtonDecorator(decorated, isExtendedLayout ? "56" : "64", "60");
+            _ = sizedDecorator.GetDimensions();
+            decorated = sizedDecorator;
+
+            return decorated;
+        }
+
+        private IEnumerable<Models.Buttons.Button> FlattenButtons(ButtonGroup root)
+        {
+            foreach (var component in root.GetComponents())
+            {
+                foreach (var button in FlattenComponent(component))
+                {
+                    yield return button;
+                }
+            }
+        }
+
+        private IEnumerable<Models.Buttons.Button> FlattenComponent(IButtonComponent component)
+        {
+            if (component is ButtonLeaf leaf)
+            {
+                yield return leaf.GetButton();
+                yield break;
+            }
+
+            if (component is ButtonGroup group)
+            {
+                foreach (var child in group.GetComponents())
+                {
+                    foreach (var button in FlattenComponent(child))
+                    {
+                        yield return button;
+                    }
+                }
+            }
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
