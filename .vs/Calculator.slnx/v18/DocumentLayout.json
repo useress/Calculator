@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\commands\\commandinvoker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\buttons\\bridge\\buttonbridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\buttons\\bridge\\buttonbridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -25,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\buttons\\bridge\\buttonbridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\buttons\\bridge\\buttonbridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\commands\\inputcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -76,14 +76,14 @@
               "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\CommandInvoker.cs",
               "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
               "RelativeToolTip": "Calculator\\Models\\Commands\\CommandInvoker.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA1wCAAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAwBoAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-12T14:44:56.809Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "ButtonBridge.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Buttons\\Bridge\\ButtonBridge.cs",
               "RelativeDocumentMoniker": "Calculator\\Models\\Buttons\\Bridge\\ButtonBridge.cs",
@@ -96,7 +96,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Views\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "Calculator\\Views\\MainWindow.xaml.cs",
@@ -109,7 +109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Views\\MainWindow.xaml",
               "RelativeDocumentMoniker": "Calculator\\Views\\MainWindow.xaml",
@@ -121,7 +121,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "App.xaml",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\App.xaml",
               "RelativeDocumentMoniker": "Calculator\\App.xaml",
@@ -133,7 +133,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "CalculatorModel.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\CalculatorModel.cs",
               "RelativeDocumentMoniker": "Calculator\\Models\\CalculatorModel.cs",
@@ -146,7 +146,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "CalculatorViewModel.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\ViewModels\\CalculatorViewModel.cs",
               "RelativeDocumentMoniker": "Calculator\\ViewModels\\CalculatorViewModel.cs",

@@ -17,9 +17,9 @@ namespace Calculator.Views
         private ButtonLayoutBuilder _layoutBuilder;
         private CalculatorViewModel _viewModel;
         System.Media.SoundPlayer soundAbout = new System.Media.SoundPlayer(
-            "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\resources\\sounds\\sound_cheer.wav");
+            SoundPaths.InSoundsFolder("sound_cheer.wav"));
         System.Media.SoundPlayer soundLeave = new System.Media.SoundPlayer(
-            "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\resources\\sounds\\sound_leave.wav");
+            SoundPaths.InSoundsFolder("sound_leave.wav"));
 
 
         public MainWindow()
