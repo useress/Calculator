@@ -28,6 +28,10 @@ namespace Calculator.Models.Commands
         /// </summary>
         public void ExecuteCommand(ICalculatorCommand command)
         {
+            // тут я хочу зафигачить звуки потому что слишком запутанная структура приложения и фиг поймёт где это делать
+            System.Media.SoundPlayer soundClick = new System.Media.SoundPlayer("C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\resources\\sounds\\sound_click.wav");
+            soundClick.Play();
+
             try
             {
                 command.Execute();

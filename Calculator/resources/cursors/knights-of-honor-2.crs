@@ -1,0 +1,9 @@
+﻿[Arrow]
+Path=cursor glove.cur
+
+[Hand]
+Path=Cursor_Sword.cur
+
+[Wait]
+Path=transfer.cur
+
