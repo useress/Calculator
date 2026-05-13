@@ -10,7 +10,16 @@
 
   <ItemGroup>
     <Folder Include="Views\" />
-     <Resource Include="resources\**\*" />
+    <!-- Встраиваем в сборку: иконка, курсоры, фото (URI вида /resources/... в XAML). -->
+    <Resource Include="resources\**\*" Exclude="resources\sounds\**\*" />
+    <!-- Звуки: SoundPlayer читает только файлы с диска, копируем рядом с .exe. -->
+    <Content Include="resources\sounds\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
   
 </Project>

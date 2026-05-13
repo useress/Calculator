@@ -5,6 +5,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Calculator.Models.Buttons;
 using Calculator.ViewModels;
+using System.Media; // <--- нужно для звуков вроде как
+using System.Security.AccessControl;
+using WpfAnimatedGif; // <--- это кто такой вообще (who is this?)
 
 namespace Calculator.Views
 {
@@ -13,6 +16,11 @@ namespace Calculator.Views
         private ButtonFactory _buttonFactory;
         private ButtonLayoutBuilder _layoutBuilder;
         private CalculatorViewModel _viewModel;
+        System.Media.SoundPlayer soundAbout = new System.Media.SoundPlayer(
+            SoundPaths.InSoundsFolder("sound_cheer.wav"));
+        System.Media.SoundPlayer soundLeave = new System.Media.SoundPlayer(
+            SoundPaths.InSoundsFolder("sound_leave.wav"));
+
 
         public MainWindow()
         {
@@ -52,7 +60,7 @@ namespace Calculator.Views
                 new { Name = "Лобань Иван", Role = "Архитектор", Photo = "/resources/photos/creator1.jpg" },
                 new { Name = "Алексеев Ярослав", Role = "Стажер frontend", Photo = "/resources/photos/creator2.jpg" },
                 new { Name = "Данченко Степан", Role = "Бэкенд, тестирование", Photo = "/resources/photos/creator3.jpg" },
-                new { Name = "Самсоненко Виталий", Role = "Сеньор frontend", Photo = "/resources/photos/creator4.jpg" }
+                new { Name = "Самсоненко Виталий", Role = "Сеньор frontend", Photo = "/resources/photos/creator4.gif" }
             };
 
             foreach (var c in creators)
@@ -105,12 +113,20 @@ namespace Calculator.Views
         {
             CalculatorPanel.Visibility = Visibility.Collapsed;
             AboutPanel.Visibility = Visibility.Visible;
+
+            // звук
+            //System.Media.SoundPlayer soundClick = new System.Media.SoundPlayer("C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\resources\\sounds\\sound_cheer.wav");
+            soundAbout.Play();
         }
 
         private void BackToCalculator_Click(object sender, RoutedEventArgs e)
         {
             AboutPanel.Visibility = Visibility.Collapsed;
             CalculatorPanel.Visibility = Visibility.Visible;
+
+            // звук
+            //System.Media.SoundPlayer soundClick = new System.Media.SoundPlayer("C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\resources\\sounds\\sound_dundunn.wav");
+            soundLeave.Play();
         }
 
         private class ClearCommandWrapper : ICommand
