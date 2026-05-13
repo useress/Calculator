@@ -77,12 +77,22 @@ namespace Calculator.Views
 
                 var img = new Image
                 {
-                    Source = new BitmapImage(new Uri(c.Photo, UriKind.Relative)),
                     Width = 120,
                     Height = 120,
                     Stretch = Stretch.UniformToFill,
                     Margin = new Thickness(0, 0, 0, 8)
                 };
+
+                var photo = new BitmapImage(new Uri(c.Photo, UriKind.Relative));
+                if (c.Photo.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                {
+                    ImageBehavior.SetAnimatedSource(img, photo);
+                    ImageBehavior.SetRepeatBehavior(img, System.Windows.Media.Animation.RepeatBehavior.Forever);
+                }
+                else
+                {
+                    img.Source = photo;
+                }
 
                 var nameBlock = new TextBlock
                 {

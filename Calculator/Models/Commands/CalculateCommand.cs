@@ -22,6 +22,10 @@ namespace Calculator.Models.Commands
 
         public void Execute()
         {
+            // звук
+            System.Media.SoundPlayer soundWrong = new System.Media.SoundPlayer(SoundPaths.InSoundsFolder("sound_wrong.wav"));
+            System.Media.SoundPlayer soundProcess = new System.Media.SoundPlayer(SoundPaths.InSoundsFolder("sound_process.wav"));
+
             try
             {
                 _previousDisplay = _state.Display;
@@ -35,11 +39,18 @@ namespace Calculator.Models.Commands
                 if (double.IsInfinity(result) || double.IsNaN(result))
                 {
                     _state.Display = "Error";
+
+                    // звук
+                    soundWrong.Play();
+
                     return;
                 }
 
                 if (result == 0)
                 {
+                    // звук
+                    soundProcess.Play();
+
                     _state.Display = "0";
                     return;
                 }
@@ -74,10 +85,16 @@ namespace Calculator.Models.Commands
                 {
                     _state.Display = formatted;
                 }
+
+                // звук
+                soundProcess.Play();
             }
             catch
             {
                 _state.Display = "Error";
+
+                // звук
+                soundWrong.Play();
             }
         }
 

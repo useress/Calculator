@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\honor\\source\\repos\\Calculator\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\commands\\calculatecommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\commands\\calculatecommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\commands\\inputcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\commands\\inputcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\commands\\commandinvoker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\commands\\commandinvoker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\buttons\\bridge\\buttonbridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\buttons\\bridge\\buttonbridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\viewmodels\\calculatorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\models\\commands\\inputcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\models\\commands\\inputcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|c:\\users\\honor\\source\\repos\\calculator\\calculator\\viewmodels\\calculatorviewmodelrefactored.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -58,7 +62,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,20 +74,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CommandInvoker.cs",
-              "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
-              "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\CommandInvoker.cs",
-              "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
-              "RelativeToolTip": "Calculator\\Models\\Commands\\CommandInvoker.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAwBoAAAAVAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "CalculateCommand.cs",
+              "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CalculateCommand.cs",
+              "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\CalculateCommand.cs",
+              "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CalculateCommand.cs",
+              "RelativeToolTip": "Calculator\\Models\\Commands\\CalculateCommand.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAgwEMAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T14:44:56.809Z",
+              "WhenOpened": "2026-05-13T07:05:25.173Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ButtonBridge.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Buttons\\Bridge\\ButtonBridge.cs",
               "RelativeDocumentMoniker": "Calculator\\Models\\Buttons\\Bridge\\ButtonBridge.cs",
@@ -96,20 +100,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Views\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "Calculator\\Views\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Views\\MainWindow.xaml.cs",
               "RelativeToolTip": "Calculator\\Views\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAawH8AAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAB3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-07T16:50:38.245Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Views\\MainWindow.xaml",
               "RelativeDocumentMoniker": "Calculator\\Views\\MainWindow.xaml",
@@ -121,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "App.xaml",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\App.xaml",
               "RelativeDocumentMoniker": "Calculator\\App.xaml",
@@ -133,7 +137,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
+              "Title": "InputCommand.cs",
+              "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\InputCommand.cs",
+              "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\InputCommand.cs",
+              "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\InputCommand.cs",
+              "RelativeToolTip": "Calculator\\Models\\Commands\\InputCommand.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAmwBgAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T17:30:01.31Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CommandInvoker.cs",
+              "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "RelativeToolTip": "Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAYwB8AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T14:44:56.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "CalculatorModel.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\CalculatorModel.cs",
               "RelativeDocumentMoniker": "Calculator\\Models\\CalculatorModel.cs",
@@ -146,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "CalculatorViewModel.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\ViewModels\\CalculatorViewModel.cs",
               "RelativeDocumentMoniker": "Calculator\\ViewModels\\CalculatorViewModel.cs",
@@ -159,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "CalculatorViewModelRefactored.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\ViewModels\\CalculatorViewModelRefactored.cs",
               "RelativeDocumentMoniker": "Calculator\\ViewModels\\CalculatorViewModelRefactored.cs",
@@ -171,19 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "InputCommand.cs",
-              "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\InputCommand.cs",
-              "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\InputCommand.cs",
-              "ToolTip": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Commands\\InputCommand.cs",
-              "RelativeToolTip": "Calculator\\Models\\Commands\\InputCommand.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAuwA0AAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T17:30:01.31Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "CalculatorFacade.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Facades\\CalculatorFacade.cs",
               "RelativeDocumentMoniker": "Calculator\\Models\\Facades\\CalculatorFacade.cs",
@@ -195,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ButtonFactory.cs",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Models\\Buttons\\ButtonFactory.cs",
               "RelativeDocumentMoniker": "Calculator\\Models\\Buttons\\ButtonFactory.cs",
@@ -207,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Calculator.csproj",
               "DocumentMoniker": "C:\\Users\\honor\\source\\repos\\Calculator\\Calculator\\Calculator.csproj",
               "RelativeDocumentMoniker": "Calculator\\Calculator.csproj",
