@@ -1,5 +1,9 @@
 {
   "Version": 1,
+<<<<<<< HEAD
+  "WorkspaceRootPath": "C:\\Users\\Vital\\Desktop\\Calculator\\",
+  "Documents": [],
+=======
   "WorkspaceRootPath": "D:\\projects\\Calculator\\",
   "Documents": [
     {
@@ -19,10 +23,14 @@
       "RelativeMoniker": "D:0:0:{054F7CB1-05A9-D89F-46D4-3FD428208C29}|Calculator\\Calculator.csproj|solutionrelative:calculator\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
+>>>>>>> version1
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
+<<<<<<< HEAD
+      "DocumentGroups": []
+=======
       "DocumentGroups": [
         {
           "DockedWidth": 200,
@@ -47,12 +55,21 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+<<<<<<< Updated upstream
               "Title": "CalculatorViewModel.cs",
               "DocumentMoniker": "D:\\projects\\Calculator\\Calculator\\ViewModels\\CalculatorViewModel.cs",
               "RelativeDocumentMoniker": "Calculator\\ViewModels\\CalculatorViewModel.cs",
               "ToolTip": "D:\\projects\\Calculator\\Calculator\\ViewModels\\CalculatorViewModel.cs",
               "RelativeToolTip": "Calculator\\ViewModels\\CalculatorViewModel.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAiwEQAAAAiAAAAAAAAAA==",
+=======
+              "Title": "CommandInvoker.cs",
+              "DocumentMoniker": "D:\\projects\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "RelativeDocumentMoniker": "Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "ToolTip": "D:\\projects\\Calculator\\Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "RelativeToolTip": "Calculator\\Models\\Commands\\CommandInvoker.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwB0AAAA+AAAAAAAAAA==",
+>>>>>>> Stashed changes
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-18T06:58:48.818Z",
               "EditorCaption": ""
@@ -82,6 +99,7 @@
           ]
         }
       ]
+>>>>>>> version1
     }
   ]
 }
